@@ -10,6 +10,14 @@ cookie:
   key: some_signature_key
   expiry_days: 3
 
-preauthorized:
-  emails:
-    - admin@example.com
+credentials:
+  usernames:
+    admin:
+      email: admin@example.com
+      name: Admin User
+      password: '$2b$12$KIXQsF8Q1AVFF9G0tk7oxeN2jKipL0dYx4nVaNgB8vX2i2UB27f3a'  # password: admin
+
+cookie:
+  name: some_cookie_name
+  key: some_signature_key
+  expiry_days: 3
