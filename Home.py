@@ -7,35 +7,28 @@ from yaml.loader import SafeLoader
 with open('users.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-# Initialize the authenticator (no preauthorized field needed anymore)
+# Initialize authenticator
 authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days']
+    credentials=config['credentials'],
+    cookie_name=config['cookie']['name'],
+    key=config['cookie']['key'],
+    expiry_days=config['cookie']['expiry_days']
 )
 
-# Show login form in main content area
-name, authentication_status, username = authenticator.login('Login', location='main')
+# Show login widget
+authenticator.login()
 
-# After login
-if authentication_status:
-    authenticator.logout('Logout', 'sidebar')
-    st.title(f"Welcome, {name} 👋")
-    st.markdown("---")
-    st.subheader("Health, Safety & Environment (HSE) Dashboard")
+# If user is authenticated
+if st.session_state["authentication_status"]:
+    authenticator.logout("Logout", "sidebar")
+    st.title(f"Welcome, {st.session_state['name']} 👋")
+    st.markdown("## Health, Safety & Environment (HSE) Dashboard")
+    st.info("Use the sidebar to navigate.")
 
-    st.markdown("""
-    ### Navigate Using Sidebar:
-    - 📊 KPIs
-    - 📝 Incident Reports
-    - 👀 Safety Observations
-    """)
-
-# If login fails
-elif authentication_status is False:
+# If user is not authenticated
+elif st.session_state["authentication_status"] is False:
     st.error("❌ Incorrect username or password")
 
-# If no login attempt yet
-elif authentication_status is None:
+# If user has not attempted login yet
+elif st.session_state["authentication_status"] is None:
     st.warning("Please enter your credentials 👇")
