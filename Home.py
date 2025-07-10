@@ -1,34 +1,19 @@
 import streamlit as st
-import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
 
-# Load config from users.yaml
-with open('users.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+# 🚧 DEV MODE: Login is disabled for testing
 
-# Initialize authenticator
-authenticator = stauth.Authenticate(
-    credentials=config['credentials'],
-    cookie_name=config['cookie']['name'],
-    key=config['cookie']['key'],
-    expiry_days=config['cookie']['expiry_days']
-)
+st.set_page_config(page_title="HSE Dashboard", layout="wide")
 
-# Show login widget
-authenticator.login()
+st.title("Welcome 👋")
+st.subheader("Health, Safety & Environment (HSE) Dashboard")
 
-# If user is authenticated
-if st.session_state["authentication_status"]:
-    authenticator.logout("Logout", "sidebar")
-    st.title(f"Welcome, {st.session_state['name']} 👋")
-    st.markdown("## Health, Safety & Environment (HSE) Dashboard")
-    st.info("Use the sidebar to navigate.")
+st.markdown("---")
 
-# If user is not authenticated
-elif st.session_state["authentication_status"] is False:
-    st.error("❌ Incorrect username or password")
+st.markdown("""
+### Navigation:
+- 📊 KPIs
+- 📝 Incident Reports
+- 👀 Safety Observations
+""")
 
-# If user has not attempted login yet
-elif st.session_state["authentication_status"] is None:
-    st.warning("Please enter your credentials 👇")
+st.info("🚨 Login is currently disabled for testing purposes.")
